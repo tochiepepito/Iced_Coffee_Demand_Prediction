@@ -1,0 +1,141 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background-image: url('/static/lokal_Kofi.png');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 40px;
+    border-radius: 10px;
+    width: 500px;
+    max-width: 90%;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 24px;
+    margin-top: 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.date-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.date-group input {
+    flex: 1;
+    padding: 12px;
+    background: white;
+    border: none;
+    color: black;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="text"], 
+input[type="number"], 
+select {
+    width: 100%;
+    padding: 12px;
+    background: white;
+    border: none;
+    color: black;
+    margin-bottom: 20px;
+    font-size: 16px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+select {
+    cursor: pointer;
+}
+
+button {
+    background: black;
+    color: white;
+    border: none;
+    padding: 15px;
+    border-radius: 50px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 20px;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #333;
+}
+
+.prediction {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(144, 238, 144, 0.2);
+    border-left: 4px solid #90EE90;
+    border-radius: 4px;
+    color: #90EE90;
+    font-size: 16px;
+}
+
+.error {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255, 107, 107, 0.2);
+    border-left: 4px solid #FF6B6B;
+    border-radius: 4px;
+    color: #FF6B6B;
+    font-size: 16px;
+}
+
+.button-group {
+    margin-top: 30px;
+    display: flex;
+    gap: 10px;
+}
+
+.button-group a {
+    flex: 1;
+    display: inline-block;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-size: 14px;
+    text-align: center;
+    color: white;
+    transition: background 0.3s;
+}
+
+.download-btn {
+    background: #28a745;
+}
+
+.download-btn:hover {
+    background: #218838;
+}
+
+.view-btn {
+    background: #007bff;
+}
+
+.view-btn:hover {
+    background: #0056b3;
+}

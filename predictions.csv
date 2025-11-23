@@ -1,0 +1,4 @@
+Timestamp,Month,Day,Year,Day_of_Week,Time_of_Day,Temperature,Weather_Condition,Holiday,University_Event,Predicted_Cups_Sold
+2025-11-23 18:18:12,December,1,2025,Monday,Morning,30.0,Sunny,Regular Day,Regular Day,58.46
+2025-11-23 18:18:40,December,1,2025,Monday,Morning,28.0,Sunny,Regular Day,Regular Day,52.51
+2025-11-23 19:23:35,December,2,2025,Tuesday,Morning,26.0,Rain,Regular Day,Regular Day,36.42

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lokal Kofi - All Predictions</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/predictions.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">📊 All Predictions</h1>
+        
+        <a href="/" class="back-button">← Back to Predictor</a>
+        <a href="/download_predictions" class="download-button">📥 Download CSV</a>
+        
+        <div class="table-wrapper">
+            {{ predictions|safe }}
+        </div>
+    </div>
+</body>
+</html>

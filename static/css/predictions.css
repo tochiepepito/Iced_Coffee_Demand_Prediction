@@ -1,0 +1,91 @@
+body {
+    margin: 0;
+    height: 100vh;
+    background-image: url('/static/lokal_Kofi.png');
+    background-size: cover;
+    background-position: center;
+    font-family: Arial, sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 40px;
+    border-radius: 10px;
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table th {
+    background: #333;
+    color: white;
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #555;
+    font-weight: bold;
+}
+
+table td {
+    padding: 12px 15px;
+    border: 1px solid #555;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+table tr:hover td {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.back-button {
+    display: inline-block;
+    background: #6c757d;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.back-button:hover {
+    background: #5a6268;
+}
+
+.download-button {
+    display: inline-block;
+    background: #28a745;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-bottom: 20px;
+    font-size: 14px;
+    margin-left: 10px;
+}
+
+.download-button:hover {
+    background: #218838;
+}
+
+p {
+    text-align: center;
+    font-size: 16px;
+}
