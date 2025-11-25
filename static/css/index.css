@@ -1,13 +1,12 @@
 body {
     margin: 0;
     height: 100vh;
-    background-image: url('/static/lokal_Kofi.png');
-    background-size: cover;
-    background-position: center;
     font-family: Arial, sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;
+    position: relative;
 }
 
 .container {
@@ -17,6 +16,29 @@ body {
     border-radius: 10px;
     width: 500px;
     max-width: 90%;
+    position: relative;
+    z-index: 10;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+/* Custom scrollbar for container */
+.container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.container::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 10px;
+}
+
+.container::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .title {

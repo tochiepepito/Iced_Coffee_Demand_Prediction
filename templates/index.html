@@ -5,8 +5,262 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lokal Kofi - Iced Coffee Demand Predict</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Background layers - stacked with blend modes */
+        .background-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+        }
+
+        .background-layer.active {
+            opacity: 1;
+        }
+
+        #default-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -10;
+            background-image: url('/static/lokal_Kofi.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* Weather layer - base layer */
+        #weather-layer {
+            z-index: -9;
+            mix-blend-mode: normal;
+        }
+
+        #weather-video {
+            z-index: -9;
+            mix-blend-mode: normal;
+        }
+
+        /* Holiday layer - blended on top */
+        #holiday-layer {
+            z-index: -8;
+            mix-blend-mode: overlay;
+            opacity: 0;
+        }
+
+        #holiday-layer.active {
+            opacity: 0.7;
+        }
+
+        #holiday-video {
+            z-index: -8;
+            mix-blend-mode: overlay;
+            opacity: 0;
+        }
+
+        #holiday-video.active {
+            opacity: 0.7;
+        }
+
+        /* Event layer - blended on top */
+        #event-layer {
+            z-index: -7;
+            mix-blend-mode: screen;
+            opacity: 0;
+        }
+
+        #event-layer.active {
+            opacity: 0.6;
+        }
+
+        #event-video {
+            z-index: -7;
+            mix-blend-mode: screen;
+            opacity: 0;
+        }
+
+        #event-video.active {
+            opacity: 0.6;
+        }
+
+        /* Overlay for better text readability */
+        #visual-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -6;
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        .background-caption {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            font-size: 13px;
+            z-index: 1000;
+            display: none;
+            animation: fadeIn 0.5s;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .background-caption.active {
+            display: block;
+        }
+
+        .caption-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            gap: 8px;
+        }
+
+        .caption-label {
+            color: #90EE90;
+            font-weight: bold;
+            min-width: 80px;
+        }
+
+        .volume-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 15px;
+            border-radius: 20px;
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 10px;
+            animation: fadeIn 0.5s;
+        }
+
+        .volume-control.active {
+            display: flex;
+        }
+
+        .volume-control button {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 0;
+            margin: 0;
+            width: auto;
+            color: white;
+            transition: transform 0.2s;
+        }
+
+        .volume-control button:hover {
+            transform: scale(1.1);
+            background: transparent;
+        }
+
+        #volume-slider {
+            width: 100px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.3);
+            outline: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0;
+            padding: 0;
+        }
+
+        #volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 15px;
+            height: 15px;
+            background: #90EE90;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        #volume-slider::-moz-range-thumb {
+            width: 15px;
+            height: 15px;
+            background: #90EE90;
+            cursor: pointer;
+            border-radius: 50%;
+            border: none;
+        }
+
+        select option {
+            background: white;
+            color: black;
+        }
+    </style>
 </head>
 <body>
+    <!-- Background Layers -->
+    <div id="default-background"></div>
+    
+    <!-- Weather Layer -->
+    <img id="weather-layer" class="background-layer" src="" alt="">
+    <video id="weather-video" class="background-layer" loop>
+        <source id="weather-video-source" src="" type="video/mp4">
+    </video>
+    
+    <!-- Holiday Layer -->
+    <img id="holiday-layer" class="background-layer" src="" alt="">
+    <video id="holiday-video" class="background-layer" loop>
+        <source id="holiday-video-source" src="" type="video/mp4">
+    </video>
+    
+    <!-- Event Layer -->
+    <img id="event-layer" class="background-layer" src="" alt="">
+    <video id="event-video" class="background-layer" loop>
+        <source id="event-video-source" src="" type="video/mp4">
+    </video>
+    
+    <div id="visual-overlay"></div>
+    
+    <!-- Volume Control -->
+    <div class="volume-control" id="volume-control">
+        <button id="mute-toggle" title="Toggle Mute">🔊</button>
+        <input type="range" id="volume-slider" min="0" max="100" value="50" title="Volume">
+    </div>
+    
+    <!-- Caption showing active layers -->
+    <div class="background-caption" id="background-caption"></div>
+
     <div class="container">
         <h1 class="title">Lokal Kofi - Iced Coffee Demand Predict</h1>
         
@@ -27,9 +281,42 @@
             </select>
             
             <input type="number" name="temperature" placeholder="Temperature (°C)" required>
-            <input type="text" name="weather" placeholder="Weather (optional)">
-            <input type="text" name="holiday" placeholder="Holiday (optional)">
-            <input type="text" name="university_event" placeholder="University Event (optional)">
+            
+            <label>Weather Condition</label>
+            <select name="weather" id="weather-select">
+                <option value="">Select Weather (optional)</option>
+                <option value="Sunny">☀️ Sunny</option>
+                <option value="Rain">🌧️ Rain</option>
+                <option value="Thunder">⛈️ Thunder</option>
+                <option value="Clear">🌤️ Clear</option>
+                <option value="Cloudy">☁️ Cloudy</option>
+                <option value="Mist">🌫️ Mist</option>
+            </select>
+            
+            <label>Holiday</label>
+            <select name="holiday" id="holiday-select">
+                <option value="Regular Day">Regular Day</option>
+                <option value="Christmas">🎄 Christmas</option>
+                <option value="Holy Week">✝️ Holy Week</option>
+                <option value="New Year">🎆 New Year</option>
+                <option value="Labor Day">🔧 Labor Day</option>
+                <option value="Valentines Day">💝 Valentine's Day</option>
+                <option value="Halloween">🎃 Halloween</option>
+                <option value="Araw ng Kagitingan">🇵🇭 Araw ng Kagitingan</option>
+                <option value="Independence Day">🇵🇭 Independence Day</option>
+                <option value="Eid-ul-Fitr">🌙 Eid-ul-Fitr</option>
+                <option value="Bonifacio Day">🇵🇭 Bonifacio Day</option>
+                <option value="Rizal Day">🇵🇭 Rizal Day</option>
+            </select>
+            
+            <label>University Event</label>
+            <select name="university_event" id="event-select">
+                <option value="Regular Day">Regular Day</option>
+                <option value="Palaro">🏃 Palaro (Sports Fest)</option>
+                <option value="Exam">📝 Exam Week</option>
+                <option value="Enrollment">📋 Enrollment</option>
+                <option value="Feb-ibig">💕 Feb-ibig (Love Month)</option>
+            </select>
             
             <label>Day of Week (auto-calculated)</label>
             <input type="text" name="day_of_week" placeholder="Day of Week" readonly style="background: #e0e0e0; cursor: not-allowed;">
@@ -51,6 +338,150 @@
     </div>
 
     <script>
+        // Visual content mapping
+        const visualContent = {
+            // Weather visuals
+            'Sunny': { type: 'image', src: '/static/visuals/sunny.jpg', caption: '☀️ Sunny' },
+            'Rain': { type: 'image', src: '/static/visuals/rain.jpg', caption: '🌧️ Rain' },
+            'Thunder': { type: 'video', src: '/static/visuals/thunder.mp4', caption: '⛈️ Thunder' },
+            'Clear': { type: 'image', src: '/static/visuals/clear.jpg', caption: '🌤️ Clear' },
+            'Cloudy': { type: 'image', src: '/static/visuals/cloudy.jpg', caption: '☁️ Cloudy' },
+            'Mist': { type: 'image', src: '/static/visuals/mist.jpg', caption: '🌫️ Mist' },
+            
+            // Holiday visuals
+            'Christmas': { type: 'video', src: '/static/visuals/christmas.mp4', caption: '🎄 Christmas' },
+            'Holy Week': { type: 'image', src: '/static/visuals/holyweek.jpg', caption: '✝️ Holy Week' },
+            'New Year': { type: 'video', src: '/static/visuals/newyear.mp4', caption: '🎆 New Year' },
+            'Labor Day': { type: 'image', src: '/static/visuals/laborday.jpg', caption: '🔧 Labor Day' },
+            'Valentines Day': { type: 'image', src: '/static/visuals/valentines.jpg', caption: '💝 Valentine\'s Day' },
+            'Halloween': { type: 'video', src: '/static/visuals/halloween.mp4', caption: '🎃 Halloween' },
+            'Araw ng Kagitingan': { type: 'image', src: '/static/visuals/kagitingan.jpg', caption: '🇵🇭 Araw ng Kagitingan' },
+            'Independence Day': { type: 'image', src: '/static/visuals/independence.jpg', caption: '🇵🇭 Independence Day' },
+            'Eid-ul-Fitr': { type: 'image', src: '/static/visuals/eid.jpg', caption: '🌙 Eid-ul-Fitr' },
+            'Bonifacio Day': { type: 'image', src: '/static/visuals/bonifacio.jpg', caption: '🇵🇭 Bonifacio Day' },
+            'Rizal Day': { type: 'image', src: '/static/visuals/rizal.jpg', caption: '🇵🇭 Rizal Day' },
+            
+            // University Event visuals
+            'Palaro': { type: 'video', src: '/static/visuals/palaro.mp4', caption: '🏃 Palaro' },
+            'Exam': { type: 'image', src: '/static/visuals/exam.jpg', caption: '📝 Exam Week' },
+            'Enrollment': { type: 'image', src: '/static/visuals/enrollment.jpg', caption: '📋 Enrollment' },
+            'Feb-ibig': { type: 'image', src: '/static/visuals/febibig.jpg', caption: '💕 Feb-ibig' }
+        };
+
+        let activeVideos = [];
+
+        function updateLayer(layerType, value) {
+            const imgLayer = document.getElementById(`${layerType}-layer`);
+            const videoLayer = document.getElementById(`${layerType}-video`);
+            const videoSource = document.getElementById(`${layerType}-video-source`);
+            
+            // Reset this layer
+            imgLayer.classList.remove('active');
+            videoLayer.classList.remove('active');
+            if (!videoLayer.paused) {
+                videoLayer.pause();
+                activeVideos = activeVideos.filter(v => v !== videoLayer);
+            }
+            
+            if (value && value !== '' && value !== 'Regular Day' && visualContent[value]) {
+                const content = visualContent[value];
+                
+                if (content.type === 'image') {
+                    imgLayer.src = content.src;
+                    imgLayer.classList.add('active');
+                } else if (content.type === 'video') {
+                    videoSource.src = content.src;
+                    videoLayer.load();
+                    videoLayer.volume = document.getElementById('volume-slider').value / 100;
+                    videoLayer.classList.add('active');
+                    activeVideos.push(videoLayer);
+                    
+                    videoLayer.play().catch(e => {
+                        console.log('Video autoplay prevented:', e);
+                        playVideosOnClick();
+                    });
+                }
+            }
+            
+            updateCaption();
+            updateVolumeControl();
+        }
+
+        function updateCaption() {
+            const caption = document.getElementById('background-caption');
+            const weather = document.getElementById('weather-select').value;
+            const holiday = document.getElementById('holiday-select').value;
+            const event = document.getElementById('event-select').value;
+            
+            let captions = [];
+            
+            if (weather && weather !== '' && visualContent[weather]) {
+                captions.push(`<div class="caption-item"><span class="caption-label">Weather:</span><span>${visualContent[weather].caption}</span></div>`);
+            }
+            if (holiday && holiday !== 'Regular Day' && visualContent[holiday]) {
+                captions.push(`<div class="caption-item"><span class="caption-label">Holiday:</span><span>${visualContent[holiday].caption}</span></div>`);
+            }
+            if (event && event !== 'Regular Day' && visualContent[event]) {
+                captions.push(`<div class="caption-item"><span class="caption-label">Event:</span><span>${visualContent[event].caption}</span></div>`);
+            }
+            
+            if (captions.length > 0) {
+                caption.innerHTML = '<strong>Active Layers:</strong><br>' + captions.join('');
+                caption.classList.add('active');
+            } else {
+                caption.classList.remove('active');
+            }
+        }
+
+        function updateVolumeControl() {
+            const volumeControl = document.getElementById('volume-control');
+            if (activeVideos.length > 0) {
+                volumeControl.classList.add('active');
+            } else {
+                volumeControl.classList.remove('active');
+            }
+        }
+
+        function playVideosOnClick() {
+            if (activeVideos.some(v => v.paused)) {
+                document.addEventListener('click', function playOnClick() {
+                    activeVideos.forEach(v => v.play());
+                    document.removeEventListener('click', playOnClick);
+                }, { once: true });
+            }
+        }
+
+        // Volume controls
+        document.getElementById('mute-toggle').addEventListener('click', function() {
+            const isMuted = activeVideos[0]?.muted || false;
+            activeVideos.forEach(video => {
+                video.muted = !isMuted;
+            });
+            this.textContent = !isMuted ? '🔇' : '🔊';
+        });
+
+        document.getElementById('volume-slider').addEventListener('input', function() {
+            const volume = this.value / 100;
+            activeVideos.forEach(video => {
+                video.volume = volume;
+            });
+            document.getElementById('mute-toggle').textContent = volume === 0 ? '🔇' : '🔊';
+        });
+
+        // Event listeners for dropdowns
+        document.getElementById('weather-select').addEventListener('change', function() {
+            updateLayer('weather', this.value);
+        });
+
+        document.getElementById('holiday-select').addEventListener('change', function() {
+            updateLayer('holiday', this.value);
+        });
+
+        document.getElementById('event-select').addEventListener('change', function() {
+            updateLayer('event', this.value);
+        });
+
+        // Day of week calculation
         function updateDayOfWeek() {
             const month = document.querySelector('input[name="month"]').value;
             const day = document.querySelector('input[name="day"]').value;
