@@ -26,7 +26,7 @@
             position: relative;
         }
 
-        /* Background layers - videos overlay images */
+        /* Background layers - all overlay the default background */
         .background-layer {
             position: fixed;
             top: 0;
@@ -55,54 +55,66 @@
             background-repeat: no-repeat;
         }
 
-        /* Image layers - lower z-index */
+        /* All image layers overlay with transparency */
         #weather-layer {
-            z-index: -9;
+            z-index: -7;
+            opacity: 0;
+        }
+
+        #weather-layer.active {
+            opacity: 0.5;
+            mix-blend-mode: multiply;
         }
 
         #holiday-layer {
-            z-index: -8;
-            mix-blend-mode: overlay;
+            z-index: -6;
             opacity: 0;
         }
 
         #holiday-layer.active {
-            opacity: 0.7;
+            opacity: 0.6;
+            mix-blend-mode: overlay;
         }
 
         #event-layer {
-            z-index: -7;
-            mix-blend-mode: screen;
+            z-index: -5;
             opacity: 0;
         }
 
         #event-layer.active {
-            opacity: 0.6;
+            opacity: 0.5;
+            mix-blend-mode: screen;
         }
 
-        /* Video layers - higher z-index, overlay images */
+        /* All video layers overlay with transparency */
         #weather-video {
-            z-index: -6;
+            z-index: -7;
+            opacity: 0;
+        }
+
+        #weather-video.active {
+            opacity: 0.6;
+            mix-blend-mode: multiply;
         }
 
         #holiday-video {
-            z-index: -5;
-            mix-blend-mode: overlay;
+            z-index: -6;
             opacity: 0;
         }
 
         #holiday-video.active {
             opacity: 0.7;
+            mix-blend-mode: overlay;
         }
 
         #event-video {
-            z-index: -4;
-            mix-blend-mode: screen;
+            z-index: -5;
             opacity: 0;
         }
 
         #event-video.active {
             opacity: 0.6;
+            mix-blend-mode: screen;
         }
 
         /* Overlay for better text readability */
