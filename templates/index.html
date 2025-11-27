@@ -26,7 +26,7 @@
             position: relative;
         }
 
-        /* Background layers - stacked with blend modes */
+        /* Background layers - videos overlay images */
         .background-layer {
             position: fixed;
             top: 0;
@@ -55,18 +55,11 @@
             background-repeat: no-repeat;
         }
 
-        /* Weather layer - base layer */
+        /* Image layers - lower z-index */
         #weather-layer {
             z-index: -9;
-            mix-blend-mode: normal;
         }
 
-        #weather-video {
-            z-index: -9;
-            mix-blend-mode: normal;
-        }
-
-        /* Holiday layer - blended on top */
         #holiday-layer {
             z-index: -8;
             mix-blend-mode: overlay;
@@ -77,17 +70,6 @@
             opacity: 0.7;
         }
 
-        #holiday-video {
-            z-index: -8;
-            mix-blend-mode: overlay;
-            opacity: 0;
-        }
-
-        #holiday-video.active {
-            opacity: 0.7;
-        }
-
-        /* Event layer - blended on top */
         #event-layer {
             z-index: -7;
             mix-blend-mode: screen;
@@ -98,8 +80,23 @@
             opacity: 0.6;
         }
 
+        /* Video layers - higher z-index, overlay images */
+        #weather-video {
+            z-index: -6;
+        }
+
+        #holiday-video {
+            z-index: -5;
+            mix-blend-mode: overlay;
+            opacity: 0;
+        }
+
+        #holiday-video.active {
+            opacity: 0.7;
+        }
+
         #event-video {
-            z-index: -7;
+            z-index: -4;
             mix-blend-mode: screen;
             opacity: 0;
         }
@@ -115,7 +112,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -6;
+            z-index: -3;
             background: rgba(0, 0, 0, 0.3);
         }
 
@@ -341,12 +338,12 @@
         // Visual content mapping
         const visualContent = {
             // Weather visuals
-            'Sunny': { type: 'image', src: '/static/visuals/sunny.jpg', caption: '☀️ Sunny' },
-            'Rain': { type: 'image', src: '/static/visuals/rain.jpg', caption: '🌧️ Rain' },
+            'Sunny': { type: 'video', src: '/static/visuals/sunny.mp4', caption: '☀️ Sunny' },
+            'Rain': { type: 'video', src: '/static/visuals/rain.mp4', caption: '🌧️ Rain' },
             'Thunder': { type: 'video', src: '/static/visuals/thunder.mp4', caption: '⛈️ Thunder' },
             'Clear': { type: 'image', src: '/static/visuals/clear.jpg', caption: '🌤️ Clear' },
-            'Cloudy': { type: 'image', src: '/static/visuals/cloudy.jpg', caption: '☁️ Cloudy' },
-            'Mist': { type: 'image', src: '/static/visuals/mist.jpg', caption: '🌫️ Mist' },
+            'Cloudy': { type: 'video', src: '/static/visuals/cloudy.mp4', caption: '☁️ Cloudy' },
+            'Mist': { type: 'video', src: '/static/visuals/mist.mp4', caption: '🌫️ Mist' },
             
             // Holiday visuals
             'Christmas': { type: 'video', src: '/static/visuals/christmas.mp4', caption: '🎄 Christmas' },
