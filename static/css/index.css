@@ -119,6 +119,84 @@ html, body {
     z-index: 5;
 }
 
+/* Cup Result Container */
+.cup-result-container {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%) scale(0.8);
+    z-index: 6;
+    opacity: 0;
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.7));
+}
+
+.cup-result-container.show {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.4);
+}
+
+.cup-icon {
+    width: 280px;
+    height: 390px;
+    filter: drop-shadow(0 5px 20px rgba(0, 0, 0, 0.5));
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.coffee-wave {
+    animation: wave 2s ease-in-out infinite;
+}
+
+@keyframes wave {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-3px) scaleY(1.1); }
+}
+
+.prediction-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    pointer-events: none;
+    z-index: 7;
+}
+
+.cups-number {
+    display: block;
+    font-size: 72px;
+    font-weight: 800;
+    color: #5C3D2E;
+    text-shadow: 
+        2px 2px 4px rgba(255, 255, 255, 0.8),
+        0 0 10px rgba(255, 255, 255, 0.5);
+    line-height: 1;
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+}
+
+.cups-label {
+    display: block;
+    font-size: 20px;
+    font-weight: 700;
+    color: #3D2817;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-top: 10px;
+    text-shadow: 
+        1px 1px 2px rgba(255, 255, 255, 0.8),
+        0 0 5px rgba(255, 255, 255, 0.3);
+}
+
 /* Visual caption */
 .visual-caption {
     position: absolute;
@@ -435,5 +513,28 @@ input[readonly] {
     .form-section {
         flex: 1;
         height: 60vh;
+    }
+
+    .cup-result-container {
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) scale(0.6);
+    }
+
+    .cup-result-container.show {
+        transform: translate(-50%, -50%) scale(0.9);
+    }
+
+    .visual-caption {
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .visual-caption h2 {
+        font-size: 28px;
+    }
+
+    .visual-caption p {
+        font-size: 14px;
     }
 }
