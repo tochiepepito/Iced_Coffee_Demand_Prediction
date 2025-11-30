@@ -10,8 +10,16 @@
     <div class="container">
         <h1 class="title">📊 All Predictions</h1>
         
-        <a href="/" class="back-button">← Back to Predictor</a>
-        <a href="/download_predictions" class="download-button">📥 Download CSV</a>
+        <div class="button-group">
+            <a href="/" class="back-button">
+                <span>←</span>
+                <span>Back to Predictor</span>
+            </a>
+            <a href="/download_predictions" class="download-button">
+                <span>📥</span>
+                <span>Download CSV</span>
+            </a>
+        </div>
         
         <div class="table-wrapper">
             {{ predictions|safe }}
